@@ -1,5 +1,5 @@
 set cbrange[-2:3]
 do for [i=20:100] {
 sp[0:100][0:100][-2:3] 'fort.'.i u 1:2:3:3 palette
-pause 0.15
+pause 01.15
 }
