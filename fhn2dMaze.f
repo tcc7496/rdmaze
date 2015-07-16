@@ -1,7 +1,7 @@
 
           implicit real*8 (a-h,o-z)
-          parameter (nx=210)
-          parameter (ny=210)
+          parameter (nx=209)
+          parameter (ny=209)
 
          real eps,dt,dx,Diff,delta,a,b,gamma,dlap
          real u,v
@@ -77,7 +77,7 @@ c--      Iextt=1.90   ! external current to produce AP
 c--      Opening up the wall points to get boundary
 
        open(unit=10, file="largeMaze.txt")
-       do k=1,nx*ny
+       do k=1,(nx+1)*(ny+1)
        read(10,*,end=10)i,j
        phi(i,j)=0
        enddo
