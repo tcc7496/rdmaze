@@ -5,7 +5,7 @@
 
          real eps,dt,dx,Diff,delta,a,b,gamma,dlap
          real u,v
-         real ut   
+         real ut
 
          real time
          integer  ntime, n, m
@@ -26,13 +26,13 @@ c--------- eps = 0.08
            Diff=1.
            dlap=Diff*dt/(dx*dx)
            ntime=15000
-     
+
 
 c---------------- Initial Conditions (rest state) ---------------------------------
         do i=0,nx+1
         do j=0,ny+1
         u(i,j)=-1.199
-        ut(i,j)=u(i,j) 
+        ut(i,j)=u(i,j)
         phi(i,j)=1
         enddo
         enddo
@@ -42,19 +42,19 @@ c------ blocks/obstacles
 c       do i=20,30
 c       do j=20,40
 c       phi(i,j)=0
-c       enddo     
+c       enddo
 c       enddo
 
 c       do i=25,35
 c       do j=50,70
 c       phi(i,j)=0
-c       enddo     
+c       enddo
 c       enddo
 
 c       do i=10,60
 c       do j=50,60
 c       phi(i,j)=0
-c       enddo     
+c       enddo
 c       enddo
 
 c------ initial excitation
@@ -77,17 +77,17 @@ c--      Iextt=1.90   ! external current to produce AP
 c--      Opening up the wall points to get boundary
 
        open(unit=10, file="largeMaze.txt")
-       do k=1,10000
+       do k=1,nx*ny
        read(10,*,end=10)i,j
        phi(i,j)=0
        enddo
-10      continue 
-        
-        do i=0,15
-        do j=0,15
-         phi(i,j)=1
-        enddo
-        enddo
+10       continue
+
+       do i=0,15
+       do j=0,15
+        phi(i,j)=1
+       enddo
+       enddo
 
         do i=0,nx+1
         do j=0, ny+1
@@ -100,11 +100,11 @@ c--      Opening up the wall points to get boundary
 
 
 c----------------------------------------------------
-c           time integration 
+c           time integration
 c---------------------------------------------------
-         do nt=0,ntime     
+         do nt=0,ntime
 c--        Iext=0
-c-----  this injects current 
+c-----  this injects current
 c--      if(mod(nt,40000).eq.1)Iext=Iextt
 
 c--------- updating boundary conditions for zero flux
@@ -143,7 +143,7 @@ c       u(i,20) = u(i,18)
 c       u(i,40)=u(i,42)
 c       u(20,j)=u(18,j)
 c       u(30,j)=u(32,j)
-c       enddo     
+c       enddo
 c       enddo
 c
 c       do i=25,35
@@ -152,7 +152,7 @@ c       u(i,50) = u(i,48)
 c       u(i,70)=u(i,72)
 c       u(25,j)=u(23,j)
 c       u(35,j)=u(37,j)
-c       enddo     
+c       enddo
 c       enddo
 
 c-------boundary conditions for maze
@@ -182,16 +182,16 @@ c---------integration in space
         do j=1,ny
 
         if(phi(i,j).eq.1)then
-         v(i,j)=v(i,j)+eps*(u(i,j)-gamma*v(i,j)+beta)*dt   
+         v(i,j)=v(i,j)+eps*(u(i,j)-gamma*v(i,j)+beta)*dt
 c--------updating the voltage to ut
          xlap=u(i+1,j)+u(i-1,j)+u(i,j+1)+u(i,j-1)-4*u(i,j)
-          
+
          ut(i,j)=u(i,j)+(u(i,j)-u(i,j)**3/3.-v(i,j))*dt+xlap*dlap
 
         endif
-        enddo 
         enddo
-          
+        enddo
+
 c------- update u value
          do i=1,nx
          do j=1,ny
