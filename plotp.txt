@@ -1,5 +1,7 @@
 set cbrange[-2:3]
-do for [i=20:100] {
-sp[0:100][0:100][-2:3] 'fort.'.i u 1:2:3:3 palette
-pause 0.15
+set view 0,0
+set view equal xy
+do for [i=20:168:10] {
+sp[0:210][0:210][-2:3] 'fort.'.i u 1:2:3:3 palette
+pause 0.1
 }
