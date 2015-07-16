@@ -16,7 +16,7 @@ c--       dimensions for the 2 variables
 
 c--        fixed parameters
           nf=19
-           eps=0.08
+           eps=0.0005
 c--------- eps = 0.08
            t=0
            gamma=0.8
@@ -25,7 +25,7 @@ c--------- eps = 0.08
            dx=0.25
            Diff=1.
            dlap=Diff*dt/(dx*dx)
-           ntime=15000
+           ntime=70000
 
 
 c---------------- Initial Conditions (rest state) ---------------------------------
@@ -85,6 +85,12 @@ c--      Opening up the wall points to get boundary
 
        do i=0,15
        do j=0,15
+        phi(i,j)=1
+       enddo
+       enddo
+
+       do i=195,210
+       do j=195,210
         phi(i,j)=1
        enddo
        enddo
@@ -197,15 +203,17 @@ c------- update u value
          do j=1,ny
          u(i,j)=ut(i,j)
          if(mod(nt,100).eq.1)then
-         if(u(i,j).gt.-0.5)then
+c         if(u(i,j).gt.-0.5)then
           write(nf,*)i,j,u(i,j),v(i,j)
-         endif
+c         endif
          endif
          enddo
          enddo
          if(mod(nt,100).eq.1)then
            close(nf)
-           write(6,*)nf
+           if(mod(nf,10).eq.0)then
+             write(6,*)nf
+           endif
            nf=nf+1
          endif
 
