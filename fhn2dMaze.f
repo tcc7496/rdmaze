@@ -26,6 +26,7 @@ c--------- eps = 0.08
            Diff=1.
            dlap=Diff*dt/(dx*dx)
            ntime=70000
+c           ntime=10000
 
 
 c---------------- Initial Conditions (rest state) ---------------------------------
@@ -89,19 +90,19 @@ c--      Opening up the wall points to get boundary
        enddo
        enddo
 
-       do i=195,210
-       do j=195,210
+       do i=nx-15,nx
+       do j=ny-15,ny
         phi(i,j)=1
        enddo
        enddo
 
-        do i=0,nx+1
-        do j=0, ny+1
-        if(phi(i,j).eq.0)then
-        ut(i,j) = 3
-        endif
-        enddo
-        enddo
+       do i=0,nx+1
+       do j=0, ny+1
+       if(phi(i,j).eq.0)then
+       ut(i,j) = 3
+       endif
+       enddo
+       enddo
 
 
 
@@ -133,55 +134,55 @@ c           enddo
 c           enddo
 
 c---updating boundary conditions for first derivative 0
-          do i=1,nx
-          do j=1,ny
-          u(i,0)=u(i,1)
-          u(i,ny+1)=u(i,ny)
-          u(0,j)=u(1,j)
-          u(nx+1,j)=u(nx,j)
-          enddo
-          enddo
+c         do i=1,nx
+c         do j=1,ny
+c         u(i,0)=u(i,1)
+c         u(i,ny+1)=u(i,ny)
+c         u(0,j)=u(1,j)
+c         u(nx+1,j)=u(nx,j)
+c         enddo
+c         enddo
 
 c------- obstacle boundary conditions
-c       do i=20,30
-c       do j=20,40
-c       u(i,20) = u(i,18)
-c       u(i,40)=u(i,42)
-c       u(20,j)=u(18,j)
-c       u(30,j)=u(32,j)
-c       enddo
-c       enddo
+c      do i=20,30
+c      do j=20,40
+c      u(i,20) = u(i,18)
+c      u(i,40)=u(i,42)
+c      u(20,j)=u(18,j)
+c      u(30,j)=u(32,j)
+c      enddo
+c      enddo
 c
-c       do i=25,35
-c       do j=50,70
-c       u(i,50) = u(i,48)
-c       u(i,70)=u(i,72)
-c       u(25,j)=u(23,j)
-c       u(35,j)=u(37,j)
-c       enddo
-c       enddo
+c      do i=25,35
+c      do j=50,70
+c      u(i,50) = u(i,48)
+c      u(i,70)=u(i,72)
+c      u(25,j)=u(23,j)
+c      u(35,j)=u(37,j)
+c      enddo
+c      enddo
 
 c-------boundary conditions for maze
-        do i=0, nx
-        do j=0, ny
-        n = phi(i,j)
-        m = phi(i,j+1)
-        if(n.gt.m)then
-        u(i,j+1) = u(i,j)
-        endif
-        if(n.lt.m)then
-        u(i,j) = u(i,j+1)
-        endif
-        n = phi(i,j)
-        m = phi(i+1,j)
-        if(n.gt.m)then
-        u(i+1,j) = u(i,j)
-        endif
-        if(n.lt.m)then
-        u(i,j) = u(i+1,j)
-        endif
-        enddo
-        enddo
+      do i=0, nx
+      do j=0, ny
+      n = phi(i,j)
+      m = phi(i,j+1)
+      if(n.gt.m)then
+      u(i,j+1) = u(i,j)
+      endif
+      if(n.lt.m)then
+      u(i,j) = u(i,j+1)
+      endif
+      n = phi(i,j)
+      m = phi(i+1,j)
+      if(n.gt.m)then
+      u(i+1,j) = u(i,j)
+      endif
+      if(n.lt.m)then
+      u(i,j) = u(i+1,j)
+      endif
+      enddo
+      enddo
 
 c---------integration in space
         do i=1,nx
@@ -211,7 +212,7 @@ c         endif
          enddo
          if(mod(nt,100).eq.1)then
            close(nf)
-           if(mod(nf,10).eq.0)then
+           if(mod(nf,100).eq.0)then
              write(6,*)nf
            endif
            nf=nf+1
