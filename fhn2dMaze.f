@@ -6,6 +6,7 @@
          real eps,dt,dx,Diff,delta,a,b,gamma,dlap
          real u,v
          real ut
+         real pinvalue
 
          real time
          integer  ntime, n, m
@@ -14,6 +15,9 @@ c--       dimensions for the 2 variables
          dimension ut(0:nx+1, 0:ny+1)
          dimension phi(0:nx+1, 0:ny+1)
 
+c--------------------------------------------------------------------------------
+c             Diffusion
+c--------------------------------------------------------------------------------
 c--        fixed parameters
           nf=19
            eps=0.0005
@@ -25,7 +29,7 @@ c--------- eps = 0.08
            dx=0.25
            Diff=1.
            dlap=Diff*dt/(dx*dx)
-           ntime=70000
+           ntime=75000
 c           ntime=10000
 
 
@@ -123,44 +127,6 @@ c         u(0,j)=u(2,j)
 c         u(nx+1,j)=u(nx-1,j)
 c         enddo
 c         enddo
-c-------- updating boundary conditions to rest state
-c           do i=1,nx
-c           do j=1,ny
-c           u(i,0)=-1.199
-c           u(i,ny+1)=-1.199
-c           u(0,j)=-1.199
-c           u(nx+1,j)=-1.199
-c           enddo
-c           enddo
-
-c---updating boundary conditions for first derivative 0
-c         do i=1,nx
-c         do j=1,ny
-c         u(i,0)=u(i,1)
-c         u(i,ny+1)=u(i,ny)
-c         u(0,j)=u(1,j)
-c         u(nx+1,j)=u(nx,j)
-c         enddo
-c         enddo
-
-c------- obstacle boundary conditions
-c      do i=20,30
-c      do j=20,40
-c      u(i,20) = u(i,18)
-c      u(i,40)=u(i,42)
-c      u(20,j)=u(18,j)
-c      u(30,j)=u(32,j)
-c      enddo
-c      enddo
-c
-c      do i=25,35
-c      do j=50,70
-c      u(i,50) = u(i,48)
-c      u(i,70)=u(i,72)
-c      u(25,j)=u(23,j)
-c      u(35,j)=u(37,j)
-c      enddo
-c      enddo
 
 c-------boundary conditions for maze
       do i=0, nx
@@ -223,5 +189,110 @@ c         endif
         if(mod(nt,20).eq.1)write(17,*)t,v(5,5),v(50,50),v(90,90)
 
          enddo
+
+c---------------------------------------------------------------------------              Contraction
+c--------------------------------------------------------------------------------
+
+c Pin ends
+c change beta to -ve beta
+
+      pinvalue = ut(nx-15,ny-15)
+      beta = -0.7
+
+c----------------------------------------------------
+c           time integration
+c---------------------------------------------------
+
+         do nt=0,ntime
+c--        Iext=0
+c-----  this injects current
+c--      if(mod(nt,40000).eq.1)Iext=Iextt
+
+c--------- updating boundary conditions for zero flux
+c         do i=1,nx
+c         do j=1,ny
+c         u(i,0)=u(i,2)
+c         u(i,ny+1)=u(i,ny-1)
+c         u(0,j)=u(2,j)
+c         u(nx+1,j)=u(nx-1,j)
+c         enddo
+c         enddo
+
+c-------- pin end values
+c      do i = 0, 15
+c      do j = 0, 15
+c      u(i,j) = pinvalue
+c      enddo
+c      enddo
+c
+c      do i = nx-8, nx-4
+c      do j = ny-8, ny-4
+c      u(i,j) = pinvalue
+c      enddo
+c      enddo
+c-------boundary conditions for maze
+      do i=0, nx
+      do j=0, ny
+      n = phi(i,j)
+      m = phi(i,j+1)
+      if(n.gt.m)then
+      u(i,j+1) = u(i,j)
+      endif
+      if(n.lt.m)then
+      u(i,j) = u(i,j+1)
+      endif
+      n = phi(i,j)
+      m = phi(i+1,j)
+      if(n.gt.m)then
+      u(i+1,j) = u(i,j)
+      endif
+      if(n.lt.m)then
+      u(i,j) = u(i+1,j)
+      endif
+      enddo
+      enddo
+
+c---------integration in space
+        do i=1,nx
+        do j=1,ny
+
+        if(phi(i,j).eq.1)then
+         v(i,j)=v(i,j)+eps*(u(i,j)-gamma*v(i,j)+beta)*dt
+c--------updating the voltage to ut
+         xlap=u(i+1,j)+u(i-1,j)+u(i,j+1)+u(i,j-1)-4*u(i,j)
+
+         ut(i,j)=u(i,j)+(u(i,j)-u(i,j)**3/3.-v(i,j))*dt+xlap*dlap
+
+        endif
+        enddo
+        enddo
+
+c------- update u value
+         do i=1,nx
+         do j=1,ny
+         u(i,j)=ut(i,j)
+         if(mod(nt,100).eq.1)then
+c         if(u(i,j).gt.-0.5)then
+          write(nf,*)i,j,u(i,j),v(i,j)
+c         endif
+         endif
+         enddo
+         enddo
+         if(mod(nt,100).eq.1)then
+           close(nf)
+           if(mod(nf,100).eq.0)then
+             write(6,*)nf
+           endif
+           nf=nf+1
+         endif
+
+         t=t+dt
+        if(mod(nt,20).eq.1)write(16,*)t,u(5,5),u(50,50),u(90,90)
+        if(mod(nt,20).eq.1)write(17,*)t,v(5,5),v(50,50),v(90,90)
+
+         enddo
          end
+
+
+
 
