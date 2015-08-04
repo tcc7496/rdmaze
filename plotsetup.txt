@@ -1,4 +1,4 @@
-gitset cbrange[-2:3]
+set cbrange[-2:3]
 set view 0,0
 set view equal xy
 #set terminal wxt size 600,600
