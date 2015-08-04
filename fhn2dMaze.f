@@ -127,7 +127,15 @@ c         u(0,j)=u(2,j)
 c         u(nx+1,j)=u(nx-1,j)
 c         enddo
 c         enddo
-
+c---updating boundary conditions for first derivative 0
+          do i=1,nx
+          do j=1,ny
+          u(i,0)=u(i,1)
+          u(i,ny+1)=u(i,ny)
+          u(0,j)=u(1,j)
+          u(nx+1,j)=u(nx,j)
+          enddo
+          enddo
 c-------boundary conditions for maze
       do i=0, nx
       do j=0, ny
