@@ -14,9 +14,10 @@ c        indices inclusive, default in 1 if m omitted in m:n
          dimension u(0:nx+1, 0:ny+1),v(nx,ny)
          dimension ut(0:nx+1, 0:ny+1)
 
-c         fixed parameters
+c--        fixed parameters
           nf=19
-           eps=.08
+           eps=0.0005
+c--------- eps = 0.08
            t=0
            gamma=0.8
            beta=.7
@@ -24,8 +25,8 @@ c         fixed parameters
            dx=0.25
            Diff=1.
            dlap=Diff*dt/(dx*dx)
-           ntime=10000
-
+           ntime=75000
+c           ntime=10000
 
 c---------------- Initial Conditions (rest state) ---------------------------------
         do i=0,nx+1
@@ -34,15 +35,17 @@ c---------------- Initial Conditions (rest state) ------------------------------
           ut(i,j)=u(i,j)
           enddo
         enddo
-        do i=1,10
-          do j=1,10
-          u(i,j)=1
-          enddo
+        
+        do i=0,10
+        do j=0,10
+         u(i,j)=1
         enddo
-        do i=1,10
-          do j=1,10
-          v(i,j)=-0.6242
-          enddo
+        enddo
+
+        do i=1,nx+1
+        do j=1,ny+1
+         v(i,j)=-0.6242
+        enddo
         enddo
 c       Iextt=1.90   ! external current to produce AP
 
@@ -66,14 +69,28 @@ c--------- updating boundary conditions for zero flux
          enddo
 c---------integration in space
         do i=1,nx
-         do j=1,ny
+        do j=1,ny
+
+        
          v(i,j)=v(i,j)+eps*(u(i,j)-gamma*v(i,j)+beta)*dt
 c--------updating the voltage to ut
-         xlap=u(i+1,j)+u(i-1,j)+u(i,j+1)+u(i,j-1)-4.*u(i,j)
+         xlap=u(i+1,j)+u(i-1,j)+u(i,j+1)+u(i,j-1)-4*u(i,j)
 
          ut(i,j)=u(i,j)+(u(i,j)-u(i,j)**3/3.-v(i,j))*dt+xlap*dlap
-         enddo
+
+       
         enddo
+        enddo         
+cc---------integration in space
+c        do i=1,nx
+c         do j=1,ny
+c         v(i,j)=v(i,j)+eps*(u(i,j)-gamma*v(i,j)+beta)*dt
+cc--------updating the voltage to ut
+c         xlap=u(i+1,j)+u(i-1,j)+u(i,j+1)+u(i,j-1)-4.*u(i,j)
+c
+c         ut(i,j)=u(i,j)+(u(i,j)-u(i,j)**3/3.-v(i,j))*dt+xlap*dlap
+c         enddo
+c        enddo
 
 c------- update u value
          do i=1,nx
