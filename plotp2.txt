@@ -1,5 +1,5 @@
 do for [i=20:760] {
-p[0:210][0:210] 'fort.'.i u 1:2
-pause 0.15
+p[0:210][0:210] 'fort.'.i u 1:2:2 palette
+pause 2
 }
 
