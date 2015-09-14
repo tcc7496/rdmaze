@@ -2,6 +2,6 @@ do for [i=20:760] {
 sp[0:210][0:210] 'fort.'.i u 1:2:3:3 palette
 set palette defined
 set cbrange [-1.19:2.2]
-pause 0.001
+pause 0.1
 }
 
