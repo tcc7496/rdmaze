@@ -23,8 +23,8 @@ c--        fixed parameters
            eps=0.0005
 c--------- eps = 0.08
            t=0
-           gamma=0.8
-           beta=.7
+           gamma=1.8
+           beta=-0.2
            dt=0.005
            dx=0.25
            Diff=1.
@@ -36,12 +36,12 @@ c           ntime=10000
 c---------------- Initial Conditions (rest state) ---------------------------------
         do i=0,nx+1
         do j=0,ny+1
-        u(i,j)=-1.199
+        u(i,j)=1.276
         ut(i,j)=u(i,j)
         phi(i,j)=1
         enddo
         enddo
-
+c -1.199
 c------ blocks/obstacles
 
 c       do i=20,30
@@ -64,18 +64,25 @@ c       enddo
 
 c------ initial excitation
 c------- 47/62
-        do i=0,10
-        do j=0,10
-         u(i,j)=1
-        enddo
-        enddo
+c        do i=0,10
+c        do j=0,10
+c         u(i,j)=-1.199
+c        enddo
+c        enddo
+c
+c------- exciting the end of the maze        
+c       do i=nx-15,nx
+c       do j=ny-15,ny
+c        u(i,j)=-1.199
+c       enddo
+c       enddo        
 
         do i=1,nx+1
         do j=1,ny+1
-         v(i,j)=-0.6242
+         v(i,j)=0.5332
         enddo
         enddo
-
+c -0.6242
 
 
 c--      Iextt=1.90   ! external current to produce AP
