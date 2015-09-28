@@ -23,8 +23,8 @@ c--        fixed parameters
            eps=0.0005
 c--------- eps = 0.08
            t=0
-           gamma=3.5
-           beta=0.3
+           gamma=1.8
+           beta=-0.2
            dt=0.005
            dx=0.25
            Diff=1.
@@ -36,7 +36,7 @@ c           ntime=10000
 c---------------- Initial Conditions (rest state) ---------------------------------
         do i=0,nx+1
         do j=0,ny+1
-        u(i,j)=-1.52052
+        u(i,j)=-0.99999
         ut(i,j)=u(i,j)
         phi(i,j)=1
         enddo
@@ -64,12 +64,12 @@ c       enddo
 
 c------ initial excitation
 c------- 47/62
-c        do i=0,10
-c        do j=0,10
-c         u(i,j)=1
-c        enddo
-c        enddo
-c
+c       do i=0,10
+c       do j=0,10
+c        u(i,j)=1
+c       enddo
+c       enddo
+
 c------- exciting the end of the maze        
 c       do i=nx-15,nx
 c       do j=ny-15,ny
@@ -79,7 +79,7 @@ c       enddo
 
         do i=1,nx+1
         do j=1,ny+1
-         v(i,j)=-0.348719
+         v(i,j)=-0.66667
         enddo
         enddo
 c -0.6242
