@@ -62,27 +62,30 @@ c       phi(i,j)=0
 c       enddo
 c       enddo
 
-c------ initial excitation
-c------- 47/62
-c       do i=0,10
-c       do j=0,10
-c        u(i,j)=1
-c       enddo
-c       enddo
-
-c------- exciting the end of the maze        
-c       do i=nx-15,nx
-c       do j=ny-15,ny
-c        u(i,j)=-1.199
-c       enddo
-c       enddo        
-
         do i=1,nx+1
         do j=1,ny+1
          v(i,j)=-0.66667
         enddo
         enddo
 c -0.6242
+
+c------ initial excitation
+c------- 47/62
+       do i=0,10
+       do j=0,10
+        u(i,j)=1.26376
+        v(i,j)=0.590979
+       enddo
+       enddo
+
+c------- exciting the end of the maze        
+       do i=nx-15,nx
+       do j=ny-15,ny
+        u(i,j)=1.26376
+       enddo
+       enddo        
+
+
 
 
 c--      Iextt=1.90   ! external current to produce AP
