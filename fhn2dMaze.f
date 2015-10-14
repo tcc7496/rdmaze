@@ -21,7 +21,7 @@ c-------------------------------------------------------------------------------
 c--        fixed parameters
           nf=19
            eps=0.0005
-c--------- eps = 0.08
+c--------- eps = 0.08, 0.0005
            t=0
            gamma=1.8
            beta=-0.2
@@ -99,7 +99,7 @@ c------- exciting the top left corner of the maze
 c--      Iextt=1.90   ! external current to produce AP
 c--      Opening up the wall points to get boundary
 
-       open(unit=10, file="largeMaze.txt")
+       open(unit=10, file="largeMaze2.txt")
        do k=1,(nx+1)*(ny+1)
        read(10,*,end=10)i,j
        phi(i,j)=0
