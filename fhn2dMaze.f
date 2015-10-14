@@ -71,20 +71,28 @@ c -0.6242
 
 c------ initial excitation
 c------- 47/62
-       do i=0,10
-       do j=0,10
+c       do i=0,10
+c       do j=0,10
+c        u(i,j)=1.26376
+c        v(i,j)=0.590979
+c       enddo
+c       enddo
+
+c------- exciting the end of the maze        
+c       do i=nx-15,nx
+c       do j=ny-15,ny
+c        u(i,j)=1.26376
+c        v(i,j)=0.590979
+c       enddo
+c       enddo        
+
+c------- exciting the top left corner of the maze        
+       do i=10,20
+       do j=ny-20,ny-10
         u(i,j)=1.26376
         v(i,j)=0.590979
        enddo
-       enddo
-
-c------- exciting the end of the maze        
-       do i=nx-15,nx
-       do j=ny-15,ny
-        u(i,j)=1.26376
-       enddo
-       enddo        
-
+       enddo 
 
 
 
@@ -106,6 +114,13 @@ c--      Opening up the wall points to get boundary
 
        do i=nx-15,nx
        do j=ny-15,ny
+        phi(i,j)=1
+       enddo
+       enddo
+
+c top left corner of the maze
+       do i=10,20
+       do j=ny-20,ny-10
         phi(i,j)=1
        enddo
        enddo
@@ -167,6 +182,21 @@ c-------boundary conditions for maze
       endif
       enddo
       enddo
+c------- keeping the beginning/end fixed at unexcited values
+       do i=0,10
+       do j=0,10
+        u(i,j)=-0.99999
+        v(i,j)=-0.66667
+       enddo
+       enddo
+   
+       do i=nx-15,nx
+       do j=ny-15,ny
+        u(i,j)=-0.99999
+        v(i,j)=-0.66667
+       enddo
+       enddo  
+
 
 c---------integration in space
         do i=1,nx
